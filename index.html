@@ -136,6 +136,24 @@
           <h2>Notas e dúvidas por matéria</h2>
           <p>Use esse espaço para registrar dúvidas, lembretes e referências.</p>
         </div>
+        <div class="question-box">
+          <div>
+            <h3>Mini assistente de dúvidas</h3>
+            <p>Descreva sua dúvida e veja sugestões de matérias para estudar.</p>
+          </div>
+          <form id="question-form">
+            <label for="question-input">Qual a sua dúvida?</label>
+            <div class="input-row">
+              <input
+                type="text"
+                id="question-input"
+                placeholder="Ex: dificuldade em interpretar gráficos e porcentagem"
+              />
+              <button type="submit">Sugerir matérias</button>
+            </div>
+          </form>
+          <div class="question-results" id="question-results" aria-live="polite"></div>
+        </div>
         <div class="notes-grid" id="notes-grid"></div>
       </section>
 

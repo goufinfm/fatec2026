@@ -40,7 +40,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='800' height='120' viewBox='0 0 800 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60 C 120 20, 240 100, 360 60 C 480 20, 600 100, 720 60 C 780 40, 800 30, 800 30 L800 120 L0 120 Z' fill='%23ffffff22'/%3E%3C/svg%3E");
+  background: url("data:image/svg+xml,%3Csvg width='900' height='160' viewBox='0 0 900 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 80 C 150 20, 300 140, 450 80 C 600 20, 750 140, 900 80 L900 160 L0 160 Z' fill='%23ffffff22'/%3E%3Cpath d='M620 60 C 640 40, 680 40, 700 60 C 720 80, 680 90, 660 80 C 650 75, 640 70, 620 60 Z' fill='%23ffffff55'/%3E%3Ccircle cx='640' cy='62' r='2' fill='%23042843'/%3E%3Ccircle cx='675' cy='62' r='2' fill='%23042843'/%3E%3Cpath d='M640 70 C 648 78, 668 78, 676 70' stroke='%23042843' stroke-width='2' fill='none'/%3E%3C/svg%3E");
   opacity: 0.5;
   pointer-events: none;
 }
@@ -389,6 +389,33 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px;
+}
+
+.question-box {
+  background: linear-gradient(120deg, #ffffff, #e0f6ff);
+  border: 1px solid #c9e6f8;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.question-box h3 {
+  margin-bottom: 4px;
+}
+
+.question-results {
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px dashed #b9dff5;
+  color: var(--blue-700);
+}
+
+.question-tip {
+  margin-top: 6px;
+  color: var(--gray-600);
 }
 
 .notes-card {

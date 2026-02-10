@@ -174,10 +174,25 @@ const tempoTip = document.getElementById("tempo-tip");
 const extraTaskForm = document.getElementById("extra-task-form");
 const extraTaskInput = document.getElementById("extra-task-input");
 const extraTaskList = document.getElementById("extra-task-list");
+const questionForm = document.getElementById("question-form");
+const questionInput = document.getElementById("question-input");
+const questionResults = document.getElementById("question-results");
 
 const STORAGE_KEY = "fatec-study-progress";
 const NOTES_KEY = "fatec-study-notes";
 const EXTRA_TASKS_KEY = "fatec-extra-tasks";
+
+const suggestionRules = [
+  { match: ["função", "funcoes", "gráfico", "grafico", "porcentagem", "probabilidade", "geometria"], subjects: ["Matemática"] },
+  { match: ["texto", "gramática", "gramatica", "interpretação", "interpretacao", "concordância", "concordancia"], subjects: ["Português"] },
+  { match: ["redação", "redacao", "dissertação", "dissertacao", "argumentação", "argumentacao"], subjects: ["Redação", "Português"] },
+  { match: ["mecânica", "mecanica", "cinemática", "cinematica", "eletricidade", "óptica", "optica"], subjects: ["Física"] },
+  { match: ["reação", "reacao", "estequiometria", "tabela periódica", "tabela periodica", "solução", "solucao"], subjects: ["Química"] },
+  { match: ["genética", "genetica", "ecologia", "fisiologia", "citologia"], subjects: ["Biologia"] },
+  { match: ["república", "republica", "era vargas", "ditadura", "história", "historia"], subjects: ["História"] },
+  { match: ["urbanização", "urbanizacao", "geopolítica", "geopolitica", "clima"], subjects: ["Geografia"] },
+  { match: ["inglês", "ingles", "vocabulary", "reading"], subjects: ["Inglês"] },
+];
 
 topics.forEach((topic) => {
   const card = document.createElement("div");
@@ -402,6 +417,34 @@ resetButton.addEventListener("click", () => {
   });
   localStorage.removeItem(STORAGE_KEY);
   updateProgress();
+});
+
+const findSuggestions = (question) => {
+  const normalized = question.toLowerCase();
+  const matchedSubjects = new Set();
+  suggestionRules.forEach((rule) => {
+    if (rule.match.some((term) => normalized.includes(term))) {
+      rule.subjects.forEach((subject) => matchedSubjects.add(subject));
+    }
+  });
+  return matchedSubjects.size > 0 ? Array.from(matchedSubjects) : ["Matemática", "Português", "Redação"];
+};
+
+const renderSuggestions = (question) => {
+  if (!question.trim()) {
+    questionResults.innerHTML = "<p>Escreva uma dúvida para receber sugestões.</p>";
+    return;
+  }
+  const suggestions = findSuggestions(question);
+  questionResults.innerHTML = `
+    <p><strong>Você pode focar em:</strong> ${suggestions.join(", ")}.</p>
+    <p class="question-tip">Dica: use os botões de foco para ver tarefas específicas.</p>
+  `;
+};
+
+questionForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  renderSuggestions(questionInput.value);
 });
 
 updateProgress();
