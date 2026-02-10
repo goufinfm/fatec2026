@@ -100,6 +100,52 @@ main {
   margin-bottom: 12px;
 }
 
+.focus-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.focus-button {
+  border: 1px solid var(--gray-300);
+  background: white;
+  color: var(--blue-700);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.focus-button:hover,
+.focus-button.is-active {
+  background: var(--blue-500);
+  color: white;
+  border-color: var(--blue-500);
+}
+
+.focus-content {
+  background: var(--blue-100);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.focus-content h3 {
+  margin-bottom: 8px;
+}
+
+.focus-content ul {
+  padding-left: 18px;
+  color: var(--gray-600);
+}
+
+.focus-tip {
+  margin-top: 10px;
+  font-weight: 600;
+  color: var(--blue-700);
+}
+
 .topics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -158,6 +204,18 @@ main {
   color: var(--gray-600);
 }
 
+.goal-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.goal-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--green-500);
+}
+
 .month-card__exam {
   background: var(--blue-100);
   padding: 10px 12px;
@@ -168,6 +226,45 @@ main {
 
 .routine {
   background: linear-gradient(120deg, #ffffff, #f2f5ff);
+}
+
+.progress__bar {
+  width: 100%;
+  height: 12px;
+  background: var(--gray-300);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(120deg, var(--green-500), #48b37e);
+  transition: width 0.3s ease;
+}
+
+.progress__stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--gray-600);
+}
+
+.ghost-button {
+  border: 1px solid var(--gray-300);
+  background: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: var(--blue-700);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ghost-button:hover {
+  border-color: var(--blue-700);
 }
 
 .routine__grid {
