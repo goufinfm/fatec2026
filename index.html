@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cronograma FATEC 2026 — 6 meses</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__content">
+        <p class="hero__eyebrow">09/02/2026 · Vestibular FATEC em junho</p>
+        <h1>Cronograma de estudos FATEC (6 meses)</h1>
+        <p>
+          Um plano completo, interativo e personalizado com tema do mar para
+          você navegar com segurança até o vestibular.
+        </p>
+        <div class="hero__meta">
+          <div>
+            <span class="meta__label">Período</span>
+            <strong>Fev → Jul (6 meses)</strong>
+          </div>
+          <div>
+            <span class="meta__label">Simulados</span>
+            <strong>1 prova FATEC por mês</strong>
+          </div>
+          <div>
+            <span class="meta__label">Objetivo</span>
+            <strong>Chegar em junho com segurança</strong>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section ocean-briefing">
+        <div class="section__header">
+          <h2>Seu briefing de navegação</h2>
+          <p>
+            Ajuste sua preparação como se fosse uma rota marítima: defina metas
+            extras, acompanhe seu humor e deixe registrado o que precisa revisar.
+          </p>
+        </div>
+        <div class="briefing-grid">
+          <div class="briefing-card">
+            <h3>Ritmo do dia</h3>
+            <div class="briefing-options" id="tempo-controls" aria-label="Ritmo do dia"></div>
+            <p class="briefing-tip" id="tempo-tip">Escolha seu ritmo para ver dicas rápidas.</p>
+          </div>
+          <div class="briefing-card">
+            <h3>Meta extra (hoje)</h3>
+            <form id="extra-task-form">
+              <label for="extra-task-input">Adicionar tarefa</label>
+              <div class="input-row">
+                <input
+                  type="text"
+                  id="extra-task-input"
+                  placeholder="Ex: Revisar exercícios de função quadrática"
+                />
+                <button type="submit">Adicionar</button>
+              </div>
+            </form>
+            <ul class="extra-task-list" id="extra-task-list"></ul>
+          </div>
+          <div class="briefing-card">
+            <h3>Checkpoints rápidos</h3>
+            <ul class="checkpoint-list" id="quick-checks">
+              <li>
+                <label class="goal-item">
+                  <input type="checkbox" data-progress-id="checkpoint-alimentacao" />
+                  <span>Alimentação leve e hidratada</span>
+                </label>
+              </li>
+              <li>
+                <label class="goal-item">
+                  <input type="checkbox" data-progress-id="checkpoint-sono" />
+                  <span>Sono completo (7-8h)</span>
+                </label>
+              </li>
+              <li>
+                <label class="goal-item">
+                  <input type="checkbox" data-progress-id="checkpoint-pauses" />
+                  <span>Pausas a cada 50 min</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Assuntos que mais caem na FATEC</h2>
+        <div class="topics" id="topics"></div>
+      </section>
+
+      <section class="section">
+        <div class="section__header">
+          <h2>Foco rápido por matéria</h2>
+          <p>
+            Escolha onde quer intensificar os estudos e receba conteúdos
+            específicos para o dia.
+          </p>
+        </div>
+        <div class="focus-controls" id="focus-controls" aria-label="Botões de foco por matéria"></div>
+        <div class="focus-content" id="focus-content" aria-live="polite"></div>
+      </section>
+
+      <section class="section progress">
+        <div class="section__header">
+          <h2>Seu progresso geral</h2>
+          <p>Marque o que foi concluído para salvar seu avanço automaticamente.</p>
+        </div>
+        <div class="progress__bar">
+          <div class="progress__fill" id="progress-fill"></div>
+        </div>
+        <div class="progress__stats">
+          <span id="progress-text">0% concluído</span>
+          <button class="ghost-button" id="reset-progress" type="button">Limpar progresso</button>
+        </div>
+        <div class="progress__details" id="progress-details"></div>
+      </section>
+
+      <section class="section">
+        <div class="section__header">
+          <h2>Cronograma mensal (Fev → Jul)</h2>
+          <p>
+            Cada mês inclui metas, foco de conteúdo e uma prova FATEC completa
+            para treinar ritmo e tempo de resolução.
+          </p>
+        </div>
+        <div class="schedule" id="schedule"></div>
+      </section>
+
+      <section class="section">
+        <div class="section__header">
+          <h2>Notas e dúvidas por matéria</h2>
+          <p>Use esse espaço para registrar dúvidas, lembretes e referências.</p>
+        </div>
+        <div class="question-box">
+          <div>
+            <h3>Mini assistente de dúvidas</h3>
+            <p>Descreva sua dúvida e veja sugestões de matérias para estudar.</p>
+          </div>
+          <form id="question-form">
+            <label for="question-input">Qual a sua dúvida?</label>
+            <div class="input-row">
+              <input
+                type="text"
+                id="question-input"
+                placeholder="Ex: dificuldade em interpretar gráficos e porcentagem"
+              />
+              <button type="submit">Sugerir matérias</button>
+            </div>
+          </form>
+          <div class="question-results" id="question-results" aria-live="polite"></div>
+        </div>
+        <div class="notes-grid" id="notes-grid"></div>
+      </section>
+
+      <section class="section routine">
+        <h2>Rotina semanal sugerida</h2>
+        <div class="routine__grid">
+          <div>
+            <h3>Segunda a quinta</h3>
+            <ul>
+              <li>2h Matemática + 1h redação/gramática</li>
+              <li>1h Humanas (História ou Geografia)</li>
+              <li>1h Ciências da natureza (Física, Química ou Biologia)</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Sexta</h3>
+            <ul>
+              <li>Revisão ativa + flashcards</li>
+              <li>Correção de exercícios da semana</li>
+              <li>Redação rápida (30 min)</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Sábado</h3>
+            <ul>
+              <li>Simulado FATEC do mês (manhã)</li>
+              <li>Correção detalhada (tarde)</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Domingo</h3>
+            <ul>
+              <li>Descanso ou revisão leve</li>
+              <li>Planejamento da semana seguinte</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        Dica: após cada simulado, faça um mapa de erros e revise os tópicos
+        críticos na semana seguinte.
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
