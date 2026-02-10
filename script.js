@@ -148,6 +148,18 @@ const focusOptions = {
   ],
 };
 
+const tempoOptions = {
+  Tranquilo: "Hoje foque em revisão leve + 1 bloco de exercícios.",
+  Equilibrado: "Meta do dia: 2 blocos de teoria + 1 simulado curto.",
+  Intenso: "Dia forte: 3 blocos completos e correção detalhada.",
+};
+
+const notesPrompts = [
+  "Dúvidas principais",
+  "Resumo rápido",
+  "Links ou referências",
+];
+
 const topicsContainer = document.getElementById("topics");
 const scheduleContainer = document.getElementById("schedule");
 const focusControls = document.getElementById("focus-controls");
@@ -155,8 +167,17 @@ const focusContent = document.getElementById("focus-content");
 const progressFill = document.getElementById("progress-fill");
 const progressText = document.getElementById("progress-text");
 const resetButton = document.getElementById("reset-progress");
+const progressDetails = document.getElementById("progress-details");
+const notesGrid = document.getElementById("notes-grid");
+const tempoControls = document.getElementById("tempo-controls");
+const tempoTip = document.getElementById("tempo-tip");
+const extraTaskForm = document.getElementById("extra-task-form");
+const extraTaskInput = document.getElementById("extra-task-input");
+const extraTaskList = document.getElementById("extra-task-list");
 
 const STORAGE_KEY = "fatec-study-progress";
+const NOTES_KEY = "fatec-study-notes";
+const EXTRA_TASKS_KEY = "fatec-extra-tasks";
 
 topics.forEach((topic) => {
   const card = document.createElement("div");
@@ -169,6 +190,21 @@ topics.forEach((topic) => {
 });
 
 const progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+const notesState = JSON.parse(localStorage.getItem(NOTES_KEY) || "{}");
+const extraTasksState = JSON.parse(localStorage.getItem(EXTRA_TASKS_KEY) || "[]");
+
+const bindProgressInputs = () => {
+  document.querySelectorAll("[data-progress-id]").forEach((input) => {
+    if (input.dataset.bound) {
+      return;
+    }
+    input.dataset.bound = "true";
+    input.addEventListener("change", (event) => {
+      saveProgress(event.target.dataset.progressId, event.target.checked);
+      updateProgress();
+    });
+  });
+};
 
 const updateProgress = () => {
   const totalGoals = document.querySelectorAll("[data-progress-id]").length;
@@ -177,6 +213,9 @@ const updateProgress = () => {
 
   progressFill.style.width = `${percentage}%`;
   progressText.textContent = `${percentage}% concluído (${completedGoals}/${totalGoals})`;
+  progressDetails.textContent = percentage >= 80
+    ? "Excelente! Você está quase pronto para a prova."
+    : "Continue avançando um pouco a cada dia.";
 };
 
 const saveProgress = (id, value) => {
@@ -217,7 +256,76 @@ const renderFocusControls = () => {
   });
 };
 
+const renderTempoControls = () => {
+  Object.entries(tempoOptions).forEach(([label, tip], index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "tempo-button";
+    button.textContent = label;
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".tempo-button").forEach((btn) => btn.classList.remove("is-active"));
+      button.classList.add("is-active");
+      tempoTip.textContent = tip;
+    });
+
+    if (index === 1) {
+      button.classList.add("is-active");
+      tempoTip.textContent = tip;
+    }
+
+    tempoControls.appendChild(button);
+  });
+};
+
+const renderNotes = () => {
+  notesGrid.innerHTML = "";
+  topics.forEach((topic) => {
+    const card = document.createElement("article");
+    card.className = "notes-card";
+    card.innerHTML = `
+      <header>
+        <h3>${topic.title}</h3>
+        <span>${topic.detail}</span>
+      </header>
+      ${notesPrompts
+        .map((prompt, index) => {
+          const fieldId = `${topic.title.toLowerCase()}-${index}`.replace(/\s+/g, "-");
+          const saved = notesState[fieldId] || "";
+          return `
+            <label>
+              <span>${prompt}</span>
+              <textarea data-notes-id="${fieldId}" rows="3" placeholder="Escreva aqui...">${saved}</textarea>
+            </label>
+          `;
+        })
+        .join("")}
+    `;
+    notesGrid.appendChild(card);
+  });
+};
+
+const renderExtraTasks = () => {
+  extraTaskList.innerHTML = "";
+  extraTasksState.forEach((task, index) => {
+    const listItem = document.createElement("li");
+    const isChecked = progressState[`extra-${index}`] === true;
+    listItem.innerHTML = `
+      <label class="goal-item">
+        <input type="checkbox" data-progress-id="extra-${index}" ${isChecked ? "checked" : ""} />
+        <span>${task}</span>
+      </label>
+      <button type="button" class="ghost-button ghost-button--small" data-remove-index="${index}">
+        Remover
+      </button>
+    `;
+    extraTaskList.appendChild(listItem);
+  });
+};
+
 renderFocusControls();
+renderTempoControls();
+renderNotes();
+renderExtraTasks();
 
 schedule.forEach((item, index) => {
   const card = document.createElement("article");
@@ -253,10 +361,38 @@ schedule.forEach((item, index) => {
   scheduleContainer.appendChild(card);
 });
 
-document.querySelectorAll("[data-progress-id]").forEach((input) => {
-  input.addEventListener("change", (event) => {
-    saveProgress(event.target.dataset.progressId, event.target.checked);
-    updateProgress();
+bindProgressInputs();
+
+extraTaskForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const value = extraTaskInput.value.trim();
+  if (!value) {
+    return;
+  }
+  extraTasksState.push(value);
+  localStorage.setItem(EXTRA_TASKS_KEY, JSON.stringify(extraTasksState));
+  extraTaskInput.value = "";
+  renderExtraTasks();
+  bindProgressInputs();
+  updateProgress();
+});
+
+extraTaskList.addEventListener("click", (event) => {
+  const removeIndex = event.target.dataset.removeIndex;
+  if (removeIndex === undefined) {
+    return;
+  }
+  extraTasksState.splice(Number(removeIndex), 1);
+  localStorage.setItem(EXTRA_TASKS_KEY, JSON.stringify(extraTasksState));
+  renderExtraTasks();
+  bindProgressInputs();
+  updateProgress();
+});
+
+document.querySelectorAll("[data-notes-id]").forEach((textarea) => {
+  textarea.addEventListener("input", (event) => {
+    notesState[event.target.dataset.notesId] = event.target.value;
+    localStorage.setItem(NOTES_KEY, JSON.stringify(notesState));
   });
 });
 
